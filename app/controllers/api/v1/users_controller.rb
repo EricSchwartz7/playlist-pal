@@ -1,7 +1,11 @@
 class Api::V1::UsersController < ApplicationController
 
   def index
-    render html: "<a href='api/v1/users/authorize_me'>Authorize Me</a>".html_safe
+    if current_user
+      redirect_to '/api/v1/users/authorize_me'
+    else
+      render html: "<a href='api/v1/users/authorize_me'>Authorize Me</a>".html_safe
+    end
   end
 
   def authorized
@@ -20,6 +24,7 @@ class Api::V1::UsersController < ApplicationController
         refresh_token = User.get_refresh_token(params[:code])
         user = User.init(refresh_token)
 
+        # Set current user
         session[:current_user_id] = user.id
 
         render html: "

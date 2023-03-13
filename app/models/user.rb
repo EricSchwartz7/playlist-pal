@@ -58,17 +58,19 @@ class User < ApplicationRecord
     user
   end
 
-  def refresh!
-    access_token, expires_at = self.refresh(refresh_token)
-    self.update!({
-      access_token: access_token,
-      expires_at: expires_at
-    })
+  def refresh
+    if self.token_expired?
+      access_token, expires_at = User.refresh(self.refresh_token)
+      self.update!({
+        access_token: access_token,
+        expires_at: expires_at
+      })
 
-    access_token
+      access_token
+    end
   end
 
   def token_expired?
-    self.expires_at < Time.now
+    self.access_token.blank? || self.expires_at < Time.now
   end
 end
