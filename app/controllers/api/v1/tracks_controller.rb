@@ -9,26 +9,10 @@ class Api::V1::TracksController < ApplicationController
     elsif params[:state].blank?
       render json: { error: 'state_mismatch' }
     else
-      auth_options = {
-        body: {
-          code: params[:code],
-          redirect_uri: 'http://localhost:3000/api/v1/tracks/authorized',
-          grant_type: 'authorization_code'
-        },
-        headers: {
-          'Authorization': "Basic #{Base64.strict_encode64("#{ENV.fetch('CLIENT_ID')}:#{ENV.fetch('CLIENT_SECRET')}")}"
-        },
-        json: true
-      }
-      response = HTTParty.post("https://accounts.spotify.com/api/token", auth_options)
-      # puts "\n\n #{response} \n\n"
-      if response["error"].present?
-        render json: response
-      else
-        refresh_token = response['refresh_token']
-        access_token = User.refresh(refresh_token)
-        render json: { access_token: access_token }
-      end
+      refresh_token = User.get_refresh_token(params[:code])
+      access_token = User.refresh(refresh_token)
+      # render json: { access_token: access_token }
+      render json: Track.hump_tracks(access_token)
     end
   end
 
