@@ -1,0 +1,2 @@
+class ArtistTrack < ApplicationRecord
+end
