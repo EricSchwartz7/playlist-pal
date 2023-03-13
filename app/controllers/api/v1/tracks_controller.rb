@@ -9,9 +9,24 @@ class Api::V1::TracksController < ApplicationController
     elsif params[:state].blank?
       render json: { error: 'state_mismatch' }
     else
-      refresh_token = User.get_refresh_token(params[:code])
-      user = User.init(refresh_token)
-      render json: user.attributes
+      if session[:access_token] && session[:user_id]
+        user = User.find(session[:user_id])
+        render html: "
+          <h1><a href=#{user.url}>#{user.name}</a></h1>
+          <img src=#{user.image_url} />
+        ".html_safe
+      else
+        refresh_token = User.get_refresh_token(params[:code])
+        user = User.init(refresh_token)
+
+        session[:user_id] = user.id
+        session[:access_token] = user.access_token
+
+        render html: "
+          <h1><a href=#{user.url}>#{user.name}</a></h1>
+          <img src=#{user.image_url} />
+        ".html_safe
+      end
     end
   end
 
@@ -28,5 +43,9 @@ class Api::V1::TracksController < ApplicationController
     }.to_query
     authorize_url = "https://accounts.spotify.com/authorize?#{query_params}"
     redirect_to authorize_url, allow_other_host: true
+  end
+
+  def hump_tracks
+    Track.hump_tracks(params[:access_token])
   end
 end
