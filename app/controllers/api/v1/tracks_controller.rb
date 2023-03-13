@@ -9,18 +9,17 @@ class Api::V1::TracksController < ApplicationController
     elsif params[:state].blank?
       render json: { error: 'state_mismatch' }
     else
-      if session[:access_token] && session[:user_id]
-        user = User.find(session[:user_id])
+      if current_user
         render html: "
-          <h1><a href=#{user.url}>#{user.name}</a></h1>
-          <img src=#{user.image_url} />
+          <h1><a href=#{current_user.url}>#{current_user.name}</a></h1>
+          <img src='#{current_user.image_url}' />
+          <a href='/api/v1/tracks/hump_tracks'>Hump tracks</a>
         ".html_safe
       else
         refresh_token = User.get_refresh_token(params[:code])
         user = User.init(refresh_token)
 
-        session[:user_id] = user.id
-        session[:access_token] = user.access_token
+        session[:current_user_id] = user.id
 
         render html: "
           <h1><a href=#{user.url}>#{user.name}</a></h1>
@@ -46,6 +45,7 @@ class Api::V1::TracksController < ApplicationController
   end
 
   def hump_tracks
-    Track.hump_tracks(params[:access_token])
+    hump_tracks = Track.hump_tracks(current_user)
+    render json: hump_tracks
   end
 end
