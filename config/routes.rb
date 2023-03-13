@@ -1,12 +1,13 @@
 Rails.application.routes.draw do
-  root to: "api/v1/tracks#index"
+  root to: "api/v1/users#index"
 
   namespace :api do
     namespace :v1 do
-      resources :tracks, only: [:index]
-      get '/tracks/authorize_me', to: 'tracks#authorize_me'
-      get '/tracks/authorized', to: 'tracks#authorized'
-      get '/tracks/refresh', to: 'tracks#refresh'
+      resources :users, only: [:index]
+      get '/users/authorize_me', to: 'users#authorize_me'
+      get '/users/authorized', to: 'users#authorized'
+      get '/users/refresh', to: 'users#refresh'
+
       get '/tracks/hump_tracks', to: 'tracks#hump_tracks'
     end
   end
