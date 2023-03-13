@@ -10,9 +10,10 @@ class Api::V1::TracksController < ApplicationController
       render json: { error: 'state_mismatch' }
     else
       refresh_token = User.get_refresh_token(params[:code])
-      access_token = User.refresh(refresh_token)
-      # render json: { access_token: access_token }
-      render json: Track.hump_tracks(access_token)
+      user_info = User.init(refresh_token)
+      # access_token = User.refresh(refresh_token)
+      render json: user_info
+      # render json: Track.hump_tracks(access_token)
     end
   end
 
