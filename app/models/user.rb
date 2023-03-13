@@ -13,7 +13,7 @@ class User < ApplicationRecord
       json: true
     }
     response = HTTParty.post("https://accounts.spotify.com/api/token", auth_options)
-    puts "\n\n get_refresh_token: #{response} \n\n"
+    # puts "\n\n get_refresh_token: #{response} \n\n"
     if response["error"].present?
       render json: response
     else
@@ -38,31 +38,38 @@ class User < ApplicationRecord
       access_token = response['access_token']
       expires_at = Time.now + response['expires_in']
 
-      puts "\n\n new token expires at #{expires_at} \n\n"
-
-      access_token
-
-      # Update the access_token and expires_at for current user
+      [access_token, expires_at]
     end
+  end
+
+  def refresh!
+    access_token, expires_at = self.refresh(refresh_token)
+    self.update!({
+      access_token: access_token,
+      expires_at: expires_at
+    })
+
+    access_token
   end
 
   def token_expired?
-    # current_user.expires_at < Time.now
+    self.expires_at < Time.now
   end
 
   def self.init(refresh_token)
+    access_token, expires_at = self.refresh(refresh_token)
     user_data = HTTParty.get("https://api.spotify.com/v1/me", headers: { 'Authorization': "Bearer #{access_token}" })
+    # puts "\n\n #{user_data} \n\n"
     user = User.find_or_initialize_by(spotify_id: user_data['id'])
-    if user.persisted?
-      # set current user
-      # refresh if token_expired?
-    else
-      user.name = user_data['display_name']
-      user.url = user_data['href']
-      user.image_url = user_data['images']&.first.dig('url')
-      user.refresh_token = refresh_token
-      user.access_token = User.refresh(refresh_token)
-      user.save!
-    end
+
+    # Might as well update all user data on each login
+    user.refresh_token = refresh_token
+    user.access_token = access_token
+    user.expires_at = expires_at
+    user.name = user_data['display_name']
+    user.url = user_data['href']
+    user.image_url = user_data['images']&.first.dig('url')
+    user.save!
+    user
   end
 end
