@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       get '/users/refresh', to: 'users#refresh'
 
       get '/tracks/hump_tracks', to: 'tracks#hump_tracks'
+      get '/tracks/names_only', to: 'tracks#names_only'
     end
   end
 end

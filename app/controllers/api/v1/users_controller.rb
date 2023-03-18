@@ -17,8 +17,9 @@ class Api::V1::UsersController < ApplicationController
       if current_user
         render html: "
           <h1>#{current_user.name}</h1>
-          <img src='#{current_user.image_url}' />
-          <a href='/api/v1/tracks/hump_tracks'>Hump tracks</a>
+          <img src='#{current_user.image_url}' /><br/>
+          <a href='/api/v1/tracks/hump_tracks'>Hump tracks</a><br/>
+          <a href='/api/v1/tracks/names_only'>Names only</a>
         ".html_safe
       else
         refresh_token = User.get_refresh_token(params[:code])
