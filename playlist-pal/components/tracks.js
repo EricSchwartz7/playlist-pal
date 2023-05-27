@@ -1,9 +1,9 @@
 import utilStyles from '../styles/utils.module.css';
 
-export default function Tracks({ allTracksData }) {
+export default function Tracks({ allTracksData, isLoading }) {
   return (
     <div>
-      {allTracksData.length ?
+      {isLoading ? "Loading..." :
         <table>
           <thead>
             <tr>
@@ -21,7 +21,7 @@ export default function Tracks({ allTracksData }) {
               </tr>
             ))}
           </tbody>
-        </table> : "Loading..."
+        </table>
       }
     </div>
   )

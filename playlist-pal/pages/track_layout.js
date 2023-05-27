@@ -18,10 +18,21 @@ import { useState, useEffect } from 'react';
 // }
 
 export default function TrackLayout({ allTracksData }) {
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [tracksData, setTracksData] = useState([]);
+
   useEffect(() => { fetchTracks() }, [])
-  const fetchTracks = async () => {
-    setTracksData(await getTracks());
+  const fetchTracks = async (page) => {
+    setIsLoading(true);
+    setTracksData(await getTracks(page));
+    setIsLoading(false);
+  }
+
+  function handlePage(isNext) {
+    const newPage = isNext ? (page + 1) : (page - 1);
+    fetchTracks(newPage);
+    setPage(newPage);
   }
 
   return (
@@ -31,9 +42,11 @@ export default function TrackLayout({ allTracksData }) {
           <title>Tracks</title>
         </Head>
         <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
-        <h2 className={utilStyles.headingLg}>Tracks</h2>
-        <Tracks allTracksData={tracksData}/>
-      </section>
+          <h2 className={utilStyles.headingLg}>Tracks</h2>
+          <Tracks allTracksData={tracksData} isLoading={isLoading}/>
+        </section>
+        <button onClick={() => handlePage(false)}>Prev</button>
+        <button onClick={() => handlePage(true)}>Next</button>
       </Layout>
     </>
   )
