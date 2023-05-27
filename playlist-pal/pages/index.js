@@ -12,7 +12,7 @@ export default function Home() {
       <section className={utilStyles.headingMd}>
         <p>Welcome to Playlist Pal</p>
         <h2>
-          <Link href="/tracks">Tracks</Link>
+          <Link href="/track_layout">Tracks</Link>
         </h2>
       </section>
     </Layout>
