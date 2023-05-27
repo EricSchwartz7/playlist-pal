@@ -7,7 +7,6 @@ import { getTracks } from '../lib/tracks';
 import Tracks from '../components/tracks'
 import { useState, useEffect } from 'react';
 
-
 // export async function getStaticProps() {
 //   const allTracksData = await getTracks();
 //   console.log(allTracksData);
@@ -20,8 +19,8 @@ import { useState, useEffect } from 'react';
 
 export default function TrackLayout({ allTracksData }) {
   const [tracksData, setTracksData] = useState([]);
-  useEffect(() => { url()  }, [])
-  const url = async () => {
+  useEffect(() => { fetchTracks() }, [])
+  const fetchTracks = async () => {
     setTracksData(await getTracks());
   }
 
