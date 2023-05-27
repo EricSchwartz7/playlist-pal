@@ -24,9 +24,9 @@ export default function Tracks({ allTracksData }) {
         <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Tracks</h2>
         <ul className={utilStyles.list}>
-          {allTracksData.map(({ foo, id }) => (
+          {allTracksData.map(({ track, id }) => (
             <li className={utilStyles.listItem} key={id}>
-              {foo}
+              {track.name}
             </li>
           ))}
         </ul>

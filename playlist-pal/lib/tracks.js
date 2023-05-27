@@ -8,10 +8,10 @@ export async function getTracks() {
   // }]
 
   const res = await fetch('http://localhost:3000/api/v1/tracks/hump_tracks');
-  return res.json();
-  // console.log(res);
+  const trackData = await res.json();
 
-  // return tracksData;
+  return trackData.items;
+
 
   // Sort posts by date
   // return tracksData.sort((a, b) => {
