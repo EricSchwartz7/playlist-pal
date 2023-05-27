@@ -30,3 +30,5 @@
 
 # Ignore ENV variables
 /config/app_environment_variables.rb
+
+.byebug_history
