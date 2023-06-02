@@ -4,7 +4,7 @@ class User < ApplicationRecord
     auth_options = {
       body: {
         code: code,
-        redirect_uri: 'http://localhost:3000/api/v1/users/authorized',
+        redirect_uri: 'http://localhost:4000/home',
         grant_type: 'authorization_code'
       },
       headers: {
