@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '../components/layout';
 import utilStyles from '../styles/utils.module.css';
-import { getTracks } from '../lib/tracks';
+import { getTracks } from '../lib/get_tracks';
 import Tracks from '../components/tracks'
 import { useState, useEffect } from 'react';
 

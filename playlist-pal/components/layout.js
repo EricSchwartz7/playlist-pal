@@ -5,6 +5,8 @@ import utilStyles from '../styles/utils.module.css';
 import Link from 'next/link';
 
 const name = 'Ric';
+// TODO - get this from user data
+const imageUrl = "https://scontent-atl3-1.xx.fbcdn.net/v/t1.6435-1/93844935_10215529875103287_396224687404744704_n.jpg?stp=dst-jpg_p320x320&_nc_cat=103&ccb=1-7&_nc_sid=0c64ff&_nc_ohc=ELabLVh9qskAX9g4E6f&_nc_ht=scontent-atl3-1.xx&edm=AP4hL3IEAAAA&oh=00_AfClZHG8X2O-aDzyx9d9xggGORsTeguQBP5ztbngwP8hMg&oe=64761000"
 export const siteTitle = 'Playlist Pal';
 
 export default function Layout({ children, home }) {
@@ -30,7 +32,7 @@ export default function Layout({ children, home }) {
           <>
             <Image
               priority
-              src="/images/profile.jpeg"
+              src={imageUrl}
               className={utilStyles.borderCircle}
               height={144}
               width={144}
@@ -43,7 +45,7 @@ export default function Layout({ children, home }) {
             <Link href="/">
               <Image
                 priority
-                src="/images/profile.jpeg"
+                src={imageUrl}
                 className={utilStyles.borderCircle}
                 height={108}
                 width={108}
