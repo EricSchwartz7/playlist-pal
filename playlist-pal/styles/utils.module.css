@@ -50,3 +50,8 @@
 .lightText {
   color: #666;
 }
+
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+}

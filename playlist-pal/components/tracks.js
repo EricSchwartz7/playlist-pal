@@ -2,9 +2,9 @@ import utilStyles from '../styles/utils.module.css';
 
 export default function Tracks({ allTracksData, isLoading }) {
   return (
-    <div>
+    <div className={utilStyles.tableContainer}>
       {isLoading ? "Loading..." :
-        <table>
+        <table class='table-auto'>
           <thead>
             <tr>
               <th>Artist</th>
